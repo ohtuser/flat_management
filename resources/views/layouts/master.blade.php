@@ -49,7 +49,7 @@
         </div>
     </div>
     @include('layouts.footer_script')
-
+    @include('layouts.common')
     @yield('js')
 </body>
 
