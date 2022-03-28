@@ -15,6 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('building_id');
             $table->unsignedBigInteger('flat_id');
             $table->integer('month');
             $table->integer('year');

@@ -78,4 +78,13 @@ class BuildingController extends Controller
         return response()->json(requestSuccess('Renter Added Successfully', '', '/renter',500),200);
 
     }
+
+    public function buildingTransactions(Request $request){
+        $buildingInfos = "SELECT * from `flats` WHERE building_id =".$request->id;
+        $buildingInfos = DB::select($buildingInfos);
+        $transactionInfo = "SELECT * from `transactions` WHERE building_id =".$request->id." AND month=".$request->month." AND year = ".$request->year;
+        $transactionInfo = DB::select($transactionInfo);
+        // dd($transactionInfo);
+        return view('building.transactions', compact('buildingInfos','transactionInfo'));
+    }
 }

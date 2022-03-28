@@ -25,6 +25,7 @@ Route::middleware('permission_check')->group(function () {
     Route::get('building-add', [BuildingController::class, 'buildingAdd'])->name('building_add');
     Route::post('building-store', [BuildingController::class, 'buildingStore'])->name('building_store');
     Route::get('building-info', [BuildingController::class, 'buildingInfo'])->name('building_info');
+    Route::get('building-transactions', [BuildingController::class, 'buildingTransactions'])->name('building_transactions');
 
 
     Route::get('renter', [BuildingController::class, 'renter'])->name('renter');

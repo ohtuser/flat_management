@@ -3,7 +3,10 @@
 @section('content')
     <div class="card mt-2">
         <div class="card-header bg-dark text-light">
-            Building Info
+            <div class="d-flex justify-content-between">
+                <h6>Building Info</h6>
+                <a href="{{route('building_transactions',['id'=>$buildingInfos[0]->building_id,'month'=>date('m'),'year'=>date('Y')])}}" class="btn btn-success btn-sm">Transactions</a>
+            </div>
         </div>
         <div class="card-body">
 
