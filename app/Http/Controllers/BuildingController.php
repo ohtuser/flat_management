@@ -27,7 +27,7 @@ class BuildingController extends Controller
         ];
         $flatData = [];
         CommonModel::insertRow('buildings', $building_data);
-        $last_added_building = CommonModel::findRow('buildings', 'company_id', $userInfo[0]->company_id)[0]->id;
+        $last_added_building = CommonModel::findRow('buildings', 'company_id', $userInfo[0]->company_id,'','','','id','desc')[0]->id;
         foreach($request->flat_no as $key=>$flat){
             foreach($flat as $inkey=>$f){
                 array_push($flatData,
@@ -46,7 +46,7 @@ class BuildingController extends Controller
 
     public function buildingInfo(Request $request){
         // $buildingInfos = "SELECT * from `buildings` as b JOIN `flats` f on b.id=f.building_id  WHERE b.id ="."1";
-        $buildingInfos = "SELECT * from `flats` WHERE building_id ="."1";
+        $buildingInfos = "SELECT * from `flats` WHERE building_id =".$request->id;
         $buildingInfos = DB::select($buildingInfos);
         return view('building.info', compact('buildingInfos'));
     }
