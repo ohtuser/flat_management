@@ -50,4 +50,32 @@ class BuildingController extends Controller
         $buildingInfos = DB::select($buildingInfos);
         return view('building.info', compact('buildingInfos'));
     }
+
+
+    public function renter(){
+        $query = "SELECT * FROM tenant";
+        $renters = DB::select($query);
+        return view('building.renter.index', compact('renters'));
+    }
+
+    public function renterStore(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'number_of_family_member' => 'required',
+            'adv_amount' => 'required',
+            'date' => 'required'
+        ]);
+
+        $data= [
+            'name' => $request->name,
+            'no_of_family_members' => $request->number_of_family_member,
+            'advance_amount' => $request->adv_amount,
+            'start_month_year' => date('Y-m-d', strtotime($request->date)),
+            'nid' => '22'
+        ];
+
+        CommonModel::insertRow('tenant', $data);
+        return response()->json(requestSuccess('Renter Added Successfully', '', '/renter',500),200);
+
+    }
 }

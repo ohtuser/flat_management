@@ -16,3 +16,11 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 {{-- confirm js --}}
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<script>
+    // $(document).ready(function(){
+        flatpickr('.date_picker',{
+            dateFormat: 'd-m-Y',//'YYYY-MM-DD',
+        });
+    // });
+</script>
