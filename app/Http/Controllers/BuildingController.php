@@ -84,7 +84,34 @@ class BuildingController extends Controller
         $buildingInfos = DB::select($buildingInfos);
         $transactionInfo = "SELECT * from `transactions` WHERE building_id =".$request->id." AND month=".$request->month." AND year = ".$request->year;
         $transactionInfo = DB::select($transactionInfo);
+        $renters = "SELECT * from `tenant`";
+        $renters = DB::select($renters);
         // dd($transactionInfo);
-        return view('building.transactions', compact('buildingInfos','transactionInfo'));
+        return view('building.transactions', compact('buildingInfos','transactionInfo','renters'));
+    }
+
+    public function flatRent(Request $request){
+        $request->validate([
+            'rent' => 'required'
+        ]);
+        $data = [
+            'tenant_id' => $request->renter,
+            'building_id'=>$request->building_id,
+            'flat_id'=>$request->flat_id,
+            'month'=>$request->month,
+            'year'=>$request->year,
+            'rent'=>$request->rent,
+            'pay'=>$request->pay ?? 0,
+            'pay_date'=>$request->pay > 0 ? date('Y-m-d') : null
+        ];
+        CommonModel::insertRow('transactions', $data);
+        return response()->json(requestSuccess('Flat Rented Successfully', '', 'building-transactions?id='.$request->building_id.'&month='.$request->month.'&year='.$request->year,500),200);
+    }
+
+    public function makePayment(Request $request){
+        $pre_payment = CommonModel::findRow('transactions','id',$request->transaction_id)[0]->pay;
+        $query = "UPDATE `transactions` SET `pay` = ".($request->pay+$pre_payment)." WHERE id=".$request->transaction_id;
+        DB::update($query);
+        return response()->json(requestSuccess('Payment Successfull', '', url()->previous(),500),200);
     }
 }

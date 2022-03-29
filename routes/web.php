@@ -30,6 +30,9 @@ Route::middleware('permission_check')->group(function () {
 
     Route::get('renter', [BuildingController::class, 'renter'])->name('renter');
     Route::post('renter-store', [BuildingController::class, 'renterStore'])->name('renter.store');
+
+    Route::post('flat-rent', [BuildingController::class, 'flatRent'])->name('flat_rent');
+    Route::post('make-payment', [BuildingController::class, 'makePayment'])->name('make_payment');
 });
 
 Route::get('login', [AuthController::class, 'login'])->name('login');

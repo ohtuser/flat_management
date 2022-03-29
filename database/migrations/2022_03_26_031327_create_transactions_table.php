@@ -22,6 +22,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('rent');
             $table->integer('pay')->default(0);
             $table->date('pay_date')->nullable();
+            $table->unsignedBigInteger('tenant_id');
             $table->timestamps();
         });
     }

@@ -29,6 +29,12 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+        .btn-xs{
+            padding: 0.1rem 0.3rem;
+        }
+        .bg-custom-blue{
+            background-color: #0093FF;
+        }
 
     </style>
     @yield('css')
