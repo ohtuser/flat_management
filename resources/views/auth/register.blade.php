@@ -36,6 +36,7 @@
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success mt-2">Register</button>
+                                <a href="{{route('login')}}">Login</a>
                             </div>
                         </div>
                     </form>

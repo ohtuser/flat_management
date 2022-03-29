@@ -28,6 +28,7 @@
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success mt-2">Login</button>
+                                <a href="{{route('register')}}">Register</a>
                             </div>
                         </div>
                     </form>

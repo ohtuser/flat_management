@@ -23,3 +23,12 @@ function active_user(){
     $user_id=auth()->guard('auth')->user()->id??null;
     return $user_id;
 }
+
+function get_renter_info($id){
+    $info = CommonModel::findRow('tenant','id',$id);
+    if(count($info)> 0){
+        return $info[0];
+    }else{
+        return null;
+    }
+}

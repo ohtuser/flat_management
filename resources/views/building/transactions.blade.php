@@ -43,19 +43,24 @@
                     @foreach ($floor as $flat)
                         @php
                             $is_rented = $transactionInfo->where('flat_id',$flat->id)->first();
-                            // echo $is_rented;
                         @endphp
                         <div class="col-2">
                             <div class="flat text-light text-center rounded py-2 {{$is_rented ? $is_rented->pay == $is_rented->rent ? 'bg-success' : 'bg-custom-blue' : 'bg-dark'}}">
                                 <h5 class="mb-0">{{ $flat->flat_no }}</h5>
                                 <p class="mb-0">{{$is_rented ? 'Rent: '.$is_rented->rent : 'E.Rent: '. $flat->rent}} {{$is_rented ? ($is_rented->rent-$is_rented->pay > 0 ? ('Due: '.$is_rented->rent-$is_rented->pay) : '') : ''}}</p>
                                 @if($is_rented)
+
+                                    @php
+                                        $info = get_renter_info($is_rented->tenant_id);
+                                    @endphp
+                                    <p class="mb-0">{{($info != null ? $info->name : '')}}</p>
                                     @if($is_rented->pay == $is_rented->rent)
                                         Paid
                                     @else
                                         <button class="btn btn-xs btn-dark" onclick="makePayment({{$is_rented->id}},{{floatVal($is_rented->rent-$is_rented->pay)}})">Make Payment</button>
                                     @endif
                                 @else
+                                    <p class="mb-0">&nbsp;</p>
                                     <button class="btn btn-xs btn-danger" onclick="addRenter({{$flat->id}},{{$flat->building_id}})">Add Renter</button>
                                 @endif
                             </div>

@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class BuildingController extends Controller
 {
-    public function buildingAdd(){
+    public function buildingAdd()
+    {
         return view('building.add');
     }
 
-    public function buildingStore(Request $request){
+    public function buildingStore(Request $request)
+    {
         // dd($request->all());
         $request->validate([
             'building_name' => 'required',
@@ -27,38 +29,44 @@ class BuildingController extends Controller
         ];
         $flatData = [];
         CommonModel::insertRow('buildings', $building_data);
-        $last_added_building = CommonModel::findRow('buildings', 'company_id', $userInfo[0]->company_id,'','','','id','desc')[0]->id;
-        foreach($request->flat_no as $key=>$flat){
-            foreach($flat as $inkey=>$f){
-                array_push($flatData,
-                [
-                    'floor' => $request->floor[$key],
-                    'building_id' => $last_added_building,
-                    'flat_no' => $f,
-                    'rent' => $request->rent[$key][$inkey] ?? 0
-                ]);
+        $last_added_building = CommonModel::findRow('buildings', 'company_id', $userInfo[0]->company_id, '', '', '', 'id', 'desc')[0]->id;
+        foreach ($request->flat_no as $key => $flat) {
+            foreach ($flat as $inkey => $f) {
+                if ($f != null) {
+                    array_push(
+                        $flatData,
+                        [
+                            'floor' => $request->floor[$key],
+                            'building_id' => $last_added_building,
+                            'flat_no' => $f,
+                            'rent' => $request->rent[$key][$inkey] ?? 0
+                        ]
+                    );
+                }
             }
         }
         CommonModel::insertRow('flats', $flatData);
-        return response()->json(requestSuccess('Building Added Successfully', '', '/',500),200);
-
+        return response()->json(requestSuccess('Building Added Successfully', '', '/', 500), 200);
     }
 
-    public function buildingInfo(Request $request){
+    public function buildingInfo(Request $request)
+    {
         // $buildingInfos = "SELECT * from `buildings` as b JOIN `flats` f on b.id=f.building_id  WHERE b.id ="."1";
-        $buildingInfos = "SELECT * from `flats` WHERE building_id =".$request->id;
+        $buildingInfos = "SELECT * from `flats` WHERE building_id =" . $request->id;
         $buildingInfos = DB::select($buildingInfos);
         return view('building.info', compact('buildingInfos'));
     }
 
 
-    public function renter(){
+    public function renter()
+    {
         $query = "SELECT * FROM tenant";
         $renters = DB::select($query);
         return view('building.renter.index', compact('renters'));
     }
 
-    public function renterStore(Request $request){
+    public function renterStore(Request $request)
+    {
         $request->validate([
             'name' => 'required',
             'number_of_family_member' => 'required',
@@ -66,7 +74,7 @@ class BuildingController extends Controller
             'date' => 'required'
         ]);
 
-        $data= [
+        $data = [
             'name' => $request->name,
             'no_of_family_members' => $request->number_of_family_member,
             'advance_amount' => $request->adv_amount,
@@ -75,43 +83,45 @@ class BuildingController extends Controller
         ];
 
         CommonModel::insertRow('tenant', $data);
-        return response()->json(requestSuccess('Renter Added Successfully', '', '/renter',500),200);
-
+        return response()->json(requestSuccess('Renter Added Successfully', '', '/renter', 500), 200);
     }
 
-    public function buildingTransactions(Request $request){
-        $buildingInfos = "SELECT * from `flats` WHERE building_id =".$request->id;
+    public function buildingTransactions(Request $request)
+    {
+        $buildingInfos = "SELECT * from `flats` WHERE building_id =" . $request->id;
         $buildingInfos = DB::select($buildingInfos);
-        $transactionInfo = "SELECT * from `transactions` WHERE building_id =".$request->id." AND month=".$request->month." AND year = ".$request->year;
+        $transactionInfo = "SELECT * from `transactions` WHERE building_id =" . $request->id . " AND month=" . $request->month . " AND year = " . $request->year;
         $transactionInfo = DB::select($transactionInfo);
         $renters = "SELECT * from `tenant`";
         $renters = DB::select($renters);
         // dd($transactionInfo);
-        return view('building.transactions', compact('buildingInfos','transactionInfo','renters'));
+        return view('building.transactions', compact('buildingInfos', 'transactionInfo', 'renters'));
     }
 
-    public function flatRent(Request $request){
+    public function flatRent(Request $request)
+    {
         $request->validate([
             'rent' => 'required'
         ]);
         $data = [
             'tenant_id' => $request->renter,
-            'building_id'=>$request->building_id,
-            'flat_id'=>$request->flat_id,
-            'month'=>$request->month,
-            'year'=>$request->year,
-            'rent'=>$request->rent,
-            'pay'=>$request->pay ?? 0,
-            'pay_date'=>$request->pay > 0 ? date('Y-m-d') : null
+            'building_id' => $request->building_id,
+            'flat_id' => $request->flat_id,
+            'month' => $request->month,
+            'year' => $request->year,
+            'rent' => $request->rent,
+            'pay' => $request->pay ?? 0,
+            'pay_date' => $request->pay > 0 ? date('Y-m-d') : null
         ];
         CommonModel::insertRow('transactions', $data);
-        return response()->json(requestSuccess('Flat Rented Successfully', '', 'building-transactions?id='.$request->building_id.'&month='.$request->month.'&year='.$request->year,500),200);
+        return response()->json(requestSuccess('Flat Rented Successfully', '', 'building-transactions?id=' . $request->building_id . '&month=' . $request->month . '&year=' . $request->year, 500), 200);
     }
 
-    public function makePayment(Request $request){
-        $pre_payment = CommonModel::findRow('transactions','id',$request->transaction_id)[0]->pay;
-        $query = "UPDATE `transactions` SET `pay` = ".($request->pay+$pre_payment)." WHERE id=".$request->transaction_id;
+    public function makePayment(Request $request)
+    {
+        $pre_payment = CommonModel::findRow('transactions', 'id', $request->transaction_id)[0]->pay;
+        $query = "UPDATE `transactions` SET `pay` = " . ($request->pay + $pre_payment) . " WHERE id=" . $request->transaction_id;
         DB::update($query);
-        return response()->json(requestSuccess('Payment Successfull', '', url()->previous(),500),200);
+        return response()->json(requestSuccess('Payment Successfull', '', url()->previous(), 500), 200);
     }
 }
