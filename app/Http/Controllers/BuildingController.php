@@ -101,7 +101,8 @@ class BuildingController extends Controller
     public function flatRent(Request $request)
     {
         $request->validate([
-            'rent' => 'required'
+            'rent' => 'required',
+            'renter' => 'required'
         ]);
         $data = [
             'tenant_id' => $request->renter,
@@ -123,5 +124,26 @@ class BuildingController extends Controller
         $query = "UPDATE `transactions` SET `pay` = " . ($request->pay + $pre_payment) . " WHERE id=" . $request->transaction_id;
         DB::update($query);
         return response()->json(requestSuccess('Payment Successfull', '', url()->previous(), 500), 200);
+    }
+
+    public function buildingTransactionsImport(Request $request){
+        $import_info = DB::select("SELECT * FROM `transactions` WHERE `building_id`=".$request->id." AND `month`=".$request->from_month." AND `year`=".$request->from_year);
+        foreach($import_info as $ii){
+            $is_exist = DB::select("SELECT * FROM `transactions` WHERE `building_id`=".$request->id." AND `month`=".$request->month." AND `year`=".$request->year." AND `flat_id`=".$ii->flat_id);
+            if(count($is_exist) <= 0){
+                $data = [
+                    'tenant_id' => $ii->tenant_id,
+                    'building_id' => $ii->building_id,
+                    'flat_id' => $ii->flat_id,
+                    'month' => $request->month,
+                    'year' => $request->year,
+                    'rent' => $ii->rent,
+                    'pay' => 0,
+                    'pay_date' =>  null
+                ];
+                CommonModel::insertRow('transactions',$data);
+            }
+        }
+        return response()->json(requestSuccess('Imported Data Successfully', '', 'building-transactions?id=' . $ii->building_id . '&month=' . $request->month . '&year=' . $request->year, 500), 200);
     }
 }

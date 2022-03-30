@@ -59,6 +59,7 @@
             let flat_list = '';
             $('.load_floors').click(function() {
                 let number_of_floors = $('.number_of_floors').val();
+
                 if(number_of_floors == '' || number_of_floors == 0){
                     $.confirm({
                         title: 'Number Of Floors Missing.'
@@ -76,13 +77,14 @@
                             btnClass: 'btn-primary',
                             keys: ['enter'],
                             action: function() {
+                                $('.number_of_floors').attr('readonly',true);
                                 for(i=1;i<=number_of_floors;i++){
                                     flat_list +=
                                     `<div class="row flat_list${i} ${i%2==0 ? '' : 'bg-custom-secondary'} py-3" >
                                         <div class="col-2 d-flex justify-content-between">
                                             <div class="form-group">
                                                 <label>Floor Name</label>
-                                                <input class="form-control" type="text" value="${i}" name="floor[${i}]">
+                                                <input class="form-control" type="text" value="${floorrName(i)}" name="floor[${i}]">
                                             </div>
                                             <div>
                                                 <label>&nbsp</label><br>
@@ -111,6 +113,17 @@
 
 
         });
+
+        function floorrName(n) {
+            if(n==1){
+                return "Ground";
+            }
+            n=n-1;
+            var s = ["th", "st", "nd", "rd"],
+                v = n % 100;
+
+            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        }
         function addFlat(row){
             $(`.flat_list_inner${row} .row`).append(`
                 <div class="col-2">

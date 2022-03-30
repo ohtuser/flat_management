@@ -26,6 +26,7 @@ Route::middleware('permission_check')->group(function () {
     Route::post('building-store', [BuildingController::class, 'buildingStore'])->name('building_store');
     Route::get('building-info', [BuildingController::class, 'buildingInfo'])->name('building_info');
     Route::get('building-transactions', [BuildingController::class, 'buildingTransactions'])->name('building_transactions');
+    Route::post('building-transactions-import', [BuildingController::class, 'buildingTransactionsImport'])->name('building_transactions.import');
 
 
     Route::get('renter', [BuildingController::class, 'renter'])->name('renter');

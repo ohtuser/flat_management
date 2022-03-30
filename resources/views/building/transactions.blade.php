@@ -13,30 +13,62 @@
                 $transactionInfo = collect($transactionInfo);
                 $monthArr = ['', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
             @endphp
-             <form action="{{route('building_transactions')}}" method="get">
-                <div class="row">
-                    <input type="hidden" name="id" value="{{request()->id}}">
-                    <div class="col-1">
-                        <select name="year" class="form-control select_2">
-                            @for($i=2022;$i<=2025;$i++)
-                                <option @if(request()->year == $i) selected @endif value="{{$i}}">{{$i}}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <div class="col-1">
-                        <select name="month" class="form-control select_2">
-                            @for($i=1;$i<=12;$i++)
-                                <option @if(request()->month == $i) selected @endif value="{{$i}}">{{$monthArr[$i]}}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <div class="col-1">
-                        <label for="">&nbsp;</label>
-                        <button class="btn btn-info btn-sm">Filter</button>
-                    </div>
+             <div class="row">
+                 <div class="col-6">
+                    <form action="{{route('building_transactions')}}" method="get">
+                        <div class="row">
+                            <input type="hidden" name="id" value="{{request()->id}}">
+                            <div class="col">
+                                <select name="year" class="form-control select_2">
+                                    @for($i=2022;$i<=2025;$i++)
+                                        <option @if(request()->year == $i) selected @endif value="{{$i}}">{{$i}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select name="month" class="form-control select_2">
+                                    @for($i=1;$i<=12;$i++)
+                                        <option @if(request()->month == $i) selected @endif value="{{$i}}">{{$monthArr[$i]}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="">&nbsp;</label>
+                                <button class="btn btn-info btn-sm">Filter</button>
+                            </div>
 
-                </div>
-            </form>
+                        </div>
+                    </form>
+                 </div>
+                 <div class="col-6">
+                    <form action="{{route('building_transactions.import')}}" method="post" class="form_submit">
+                        <div class="row">
+                            <input type="hidden" name="id" value="{{request()->id}}">
+                            <input type="hidden" name="year" value="{{request()->year}}">
+                            <input type="hidden" name="month" value="{{request()->month}}">
+                            <div class="col">
+                                <select name="from_year" class="form-control select_2">
+                                    @for($i=2022;$i<=2025;$i++)
+                                        <option @if(request()->year == $i) selected @endif value="{{$i}}">{{$i}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select name="from_month" class="form-control select_2">
+                                    @for($i=1;$i<=12;$i++)
+                                        <option @if(request()->month == $i) selected @endif value="{{$i}}">{{$monthArr[$i]}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="">&nbsp;</label>
+                                <button class="btn btn-danger btn-sm">Import</button>
+                            </div>
+
+                        </div>
+                    </form>
+                 </div>
+             </div>
             @foreach (collect($buildingInfos)->groupBy('floor') as $floor)
                 <div class="row mt-1">
                     <h4>Floor: {{$floor[0]->floor}}</h4>
