@@ -5,7 +5,7 @@
         <div class="card-header bg-dark text-light">
             <div class="d-flex justify-content-between">
                 <h6>Building Transactions</h6>
-                {{-- <a href="{{route('building_transactions',['id'=>$buildingInfos[0]->building_id,'month'=>date('m'),'year'=>date('Y')])}}" class="btn btn-success btn-sm">Transactions</a> --}}
+                <a href="{{route('building_transactions',['id'=>$buildingInfos[0]->building_id,'month'=>request()->month,'year'=>request()->year,'report'=>1])}}" class="btn btn-success btn-sm">Transactions Report</a>
             </div>
         </div>
         <div class="card-body">

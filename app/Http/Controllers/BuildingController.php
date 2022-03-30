@@ -95,6 +95,10 @@ class BuildingController extends Controller
         $renters = "SELECT * from `tenant`";
         $renters = DB::select($renters);
         // dd($transactionInfo);
+        if($request->report){
+            // dd($buildingInfos,$transactionInfo);
+            return view('building.transactions_report', compact('buildingInfos', 'transactionInfo', 'renters'));
+        }
         return view('building.transactions', compact('buildingInfos', 'transactionInfo', 'renters'));
     }
 
