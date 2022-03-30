@@ -146,4 +146,17 @@ class BuildingController extends Controller
         }
         return response()->json(requestSuccess('Imported Data Successfully', '', 'building-transactions?id=' . $ii->building_id . '&month=' . $request->month . '&year=' . $request->year, 500), 200);
     }
+
+    public function update_flat_rent(Request $request)
+    {
+        $request->validate([
+            'rent' => 'required',
+            'renter' => 'required'
+        ]);
+
+        // dd("UPDATE `transactions` SET `tenant_id`=".$request->renter.", `rent`=".$request->rent.", `pay`=".($request->pay ?? 0).", `rent`=".$request->rent." WHERE `id`=".$request->transaction_id);
+        DB::update("UPDATE `transactions` SET `tenant_id`=".$request->renter.", `rent`=".$request->rent.", `pay`=".($request->pay ?? 0).", `rent`=".$request->rent." WHERE `id`=".$request->transaction_id);
+
+        return response()->json(requestSuccess('Flat Rent Updated Successfully', '', url()->previous(), 500), 200);
+    }
 }

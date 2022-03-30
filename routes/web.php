@@ -33,6 +33,7 @@ Route::middleware('permission_check')->group(function () {
     Route::post('renter-store', [BuildingController::class, 'renterStore'])->name('renter.store');
 
     Route::post('flat-rent', [BuildingController::class, 'flatRent'])->name('flat_rent');
+    Route::post('flat-rent-update', [BuildingController::class, 'update_flat_rent'])->name('update_flat_rent');
     Route::post('make-payment', [BuildingController::class, 'makePayment'])->name('make_payment');
 });
 

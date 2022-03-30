@@ -90,6 +90,7 @@
                                         Paid
                                     @else
                                         <button class="btn btn-xs btn-dark" onclick="makePayment({{$is_rented->id}},{{floatVal($is_rented->rent-$is_rented->pay)}})">Make Payment</button>
+                                        <button class="btn btn-xs btn-warning" onclick="editRenter({{$is_rented->tenant_id}},{{$is_rented->id}},{{floatVal($is_rented->rent)}},{{floatVal($is_rented->pay)}})">Edit</button>
                                     @endif
                                 @else
                                     <p class="mb-0">&nbsp;</p>
@@ -143,6 +144,42 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editRenter" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="editRenterLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editRenterLabel">Edit Renter</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{route('update_flat_rent')}}" class="form_submit">
+                <div class="modal-body">
+                    <input type="hidden" name="transaction_id" value="" class="transaction_id">
+                    <div class="form-group">
+                        <label for="">Renter</label>
+                        <select name="renter" class="form-control py-0" id="" class="renter">
+                            @foreach ($renters as $r)
+                                <option value="{{$r->id}}">{{$r->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Rent</label>
+                        <input type="number" name="rent" class="form-control edi_rent">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Pay</label>
+                        <input type="number" name="pay" class="form-control edit_pay">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </form>
+          </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="makePayment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="makePaymentLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -179,6 +216,14 @@
             $('.flat_id').val(id);
             $('.building_id').val(building);
             $('#addRenter').modal('show');
+        }
+
+        function editRenter(tenant,id,rent,pay){
+            $('.renter').val(tenant);
+            $('.transaction_id').val(id);
+            $('.edit_pay').val(pay);
+            $('.edi_rent').val(rent);
+            $('#editRenter').modal('show');
         }
 
         function makePayment(id,due){
