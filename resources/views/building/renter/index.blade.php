@@ -26,14 +26,14 @@
                                 <label for="">Advance Amount</label>
                                 <input type="number" min="1" class="form-control" name="adv_amount">
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="">NID</label>
                                 <input type="file" class="form-control" name="nid">
                             </div>
                             <div class="form-group">
                                 <label for="">Agreement</label>
                                 <input type="file" class="form-control" name="agreement">
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label for="">&nbsp;</label><br>
                                 <button class="btn btn-success btn-sm">Save</button>
@@ -56,6 +56,7 @@
                                 <th>Name</th>
                                 <th>N.F.M.</th>
                                 <th>From</th>
+                                <th>Advance</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,6 +66,7 @@
                                     <td>{{$r->name}}</td>
                                     <td>{{$r->no_of_family_members}}</td>
                                     <td>{{date('d-m-Y', strtotime($r->start_month_year))}}</td>
+                                    <td>{{ $r->advance_amount }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

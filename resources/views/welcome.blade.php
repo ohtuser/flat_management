@@ -2,6 +2,6 @@
 
 @section('content')
 
-    <h1>Hello</h1>
+    <h1 class="text-center">Welcome To Flat Management System</h1>
 
 @endsection

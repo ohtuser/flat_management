@@ -15,12 +15,12 @@ class BuildingController extends Controller
 
     public function buildingStore(Request $request)
     {
-        // dd($request->all());
+        // dd($request->all());a
         $request->validate([
             'building_name' => 'required',
             'number_of_floors' => 'required'
         ]);
-        $userInfo = CommonModel::findRow('users', 'id', 1);
+        $userInfo = CommonModel::findRow('users', 'id', active_user());
         $building_data = [
             'name' => $request->building_name,
             'floors' => $request->number_of_floors,
