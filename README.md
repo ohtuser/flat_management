@@ -23,11 +23,11 @@ transaction records in a secure database
 8. View previous Payments.
 
 ### Requirements:
- PHP
- Laravel
- Mysql
- HTML
- CSS 
- Bootstrap
- Jquery
+1. PHP
+2. Laravel
+3. Mysql
+4. HTML
+5. CSS 
+6. Bootstrap
+7. Jquery
 
